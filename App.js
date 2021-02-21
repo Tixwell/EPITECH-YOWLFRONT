@@ -10,6 +10,7 @@ import Login from './Components/login'
 import Register from './Components/register'
 import Preference from './Components/Preferences'
 import MainPage from './Components/MainPage'
+import Commentaires from './Components/Commentaires'
 const Stack = createStackNavigator()
 
 
@@ -22,6 +23,7 @@ export default function App() {
         <Stack.Screen name="REGISTER" component={Register}/>
         <Stack.Screen name="PREFERENCE_CHOICE" component={Preference}/>
         <Stack.Screen name="MAINPAGE" component={MainPage}/>
+        <Stack.Screen name="Commentaires" component={Commentaires}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
