@@ -42,9 +42,10 @@ const Preferences = ({navigation}) => {
             }
           }
         const email = getData()
+        console.log(email)
         const submit = () =>{
             console.log(food)
-            
+            console.log(email)
             axios.get('http://127.0.0.1:8000/api/Preferences?user_id='+email+'&food='+food+'&video_games='+vg+'&travel='+travel+'&design='+design+'&clothes='+clothes+'')
             navigation.navigate("MAINPAGE")
         }
@@ -90,7 +91,8 @@ const styles = StyleSheet.create({ container: {
     marginVertical: 9
     },
     title:{
-        fontSize: 150,
+        marginTop:15,
+        fontSize: 25,
         fontFamily:"Helvetica",
     },
     email:{

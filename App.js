@@ -18,7 +18,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={Login}>
-      
         <Stack.Screen name="LOGIN" component={Login}/>
         <Stack.Screen name="REGISTER" component={Register}/>
         <Stack.Screen name="PREFERENCE_CHOICE" component={Preference}/>

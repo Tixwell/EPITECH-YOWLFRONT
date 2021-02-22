@@ -7,36 +7,48 @@ import { StyleSheet
 , TouchableOpacity
 ,FlatList
 , Keyboard } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
-const MainPage = ({navigation}) => {
+const MainPage = ({navigation,route}) => {
     const [data, setData] = useState([]);
-    const [commentaire, setCommentaire] = useState("");
-     const getArticleid = async () => {
-            try {
-              const value = await AsyncStorage.getItem('@article_id')
-              if(value !== null) {
-                return value;
-              }
-            } catch(e) {
-              // error reading value
-            }
-          }
-    useEffect(()=>{
+    const [data2, setData2] = useState([]);
+    const [getcommentaire, setCommentaire] = useState("");
+        
+     
         console.log('MOUNT')
-        axios.get('http://127.0.0.1:8000/api/readcom?article_id=2')
+        var result = [];
+        useEffect(() => {
+            const getArticleid = async () => {
+                try {
+                  const value = await AsyncStorage.getItem('@article_id')
+                  if(value !== null) {
+                    return value;
+                  }
+                } catch(e) {
+                  // error reading value
+                }
+              }
+              
+            const article_id = AsyncStorage.getItem('@article_id')
+            console.log('Commm article = '+ article_id )
+        axios.get('http://127.0.0.1:8000/api/readcom?article_id='+route.params.article_id)
         .then(async function (response) {
             const data = response.data
             console.log(response.data)
-            setData(response.data[0])
+            setData(response.data)
             setLoading(false)
             console.log(data)
-            return data
-
-        })
-       
+            setData2 (data.map(function(item) {
+                return {
+                  key: item.article_id,
+                  label: item.user_id
+                };
+              }));
+            console.log(data2)
+            return data,data2
     });
+}, []);
     const handlechange3 = (e) =>{
         setCommentaire(e.target.value);
     }
@@ -53,20 +65,23 @@ const MainPage = ({navigation}) => {
               // error reading value
             }
           }
+     
+          console.log("data =" + data);
 
-         
         function saveData () {
             
-            axios.get('http://127.0.0.1:8000/api/writecom?user_id=test&article_id=2&com='+commentaire+'')
+            console.log(getcommentaire)
+            console.log(article_id)
+            console.log('http://127.0.0.1:8000/api/writecom?user_id=unknown&article_id='+route.params.article_id+'&com='+getcommentaire+'')
+            axios.get('http://127.0.0.1:8000/api/writecom?user_id=unknown&article_id='+route.params.article_id+'&com='+getcommentaire+'')
         }
 
     console.log(data)
     const [loading, setLoading] = useState(true);    
-    
         return(
             <View style={styles.container}>
-
-                 <Text> {data.commentaire}</Text>
+               {data2.map((number) =>  <li>{number.user_id}</li>)}
+                 <Text> {data.user_id} : {data.commentaire}</Text>
                 <TextInput style={styles.inputBox}  underlineColorAndroid='rgba(0,0,0,0)' placeholder="Enter your comment"
 
                 placeholderTextColor = "white"
